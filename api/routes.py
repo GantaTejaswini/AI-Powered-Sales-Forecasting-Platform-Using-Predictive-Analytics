@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from api.schemas import LeadRequest, ConversationRequest, FullPipelineRequest
-from models.lead_model import Lead
+from ai_models.lead_model import Lead
 from engines.company_analysis import analyse_company
 from engines.lead_scorer import score_lead
 from engines.outreach_engine import generate_outreach
@@ -8,6 +8,10 @@ from engines.conversation_intelligence import analyse_conversation
 from engines.followup_engine import generate_followup
 
 router = APIRouter()
+
+@router.get("/health")
+def health_check():
+    return {"status": "SalesGenie AI is running"}
 
 @router.post("/analyse-lead")
 def analyse_lead(request: LeadRequest):
@@ -55,7 +59,6 @@ def analyse_meeting(request: ConversationRequest):
 def full_pipeline(request: FullPipelineRequest):
     try:
         lead = Lead(**request.model_dump())
-
         insight = analyse_company(lead)
         score = score_lead(lead, insight)
         email = generate_outreach(lead, insight, score)
@@ -79,7 +82,3 @@ def full_pipeline(request: FullPipelineRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/health")
-def health_check():
-    return {"status": "SalesGenie AI is running"}
