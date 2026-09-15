@@ -1,4 +1,4 @@
-# SalesGenie AI 🤖
+# AI-Powered Sales Forecasting Platform Using Predictive Analytics🤖
 ### AI Sales Assistant & Lead Intelligence Platform
 
 > Automating lead intelligence, personalised outreach, and sales conversation analysis using Large Language Models.
