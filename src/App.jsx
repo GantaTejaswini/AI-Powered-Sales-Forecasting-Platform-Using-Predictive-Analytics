@@ -6,17 +6,27 @@ import ConversationsView from './components/ConversationsView';
 import DashboardView from './components/DashboardView';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState('leads');
+  const [selectedLeadForOutreach, setSelectedLeadForOutreach] = useState(null);
+
+  const handleGenerateOutreach = (lead) => {
+    setSelectedLeadForOutreach(lead);
+    setActiveTab('outreach');
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
       <main>
-        {activeTab === 'leads' && <LeadsView />}
-        {activeTab === 'outreach' && <OutreachView />}
+        {activeTab === 'leads' && (
+          <LeadsView onGenerateOutreach={handleGenerateOutreach} />
+        )}
+        {activeTab === 'outreach' && (
+          <OutreachView initialLead={selectedLeadForOutreach} />
+        )}
         {activeTab === 'conversations' && <ConversationsView />}
         {activeTab === 'dashboard' && <DashboardView />}
       </main>
     </div>
   );
-}                         
+}
